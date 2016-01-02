@@ -17,6 +17,7 @@
 #include <linux/delay.h>
 #include <linux/workqueue.h>
 #include <linux/kmod.h>
+#include <trace/events/power.h>
 
 /* 
  * Timeout for stopping processes
@@ -169,6 +170,7 @@ void thaw_processes(void)
 {
 	struct task_struct *g, *p;
 
+	trace_suspend_resume(TPS("thaw_processes"), 0, true);
 	if (pm_freezing)
 		atomic_dec(&system_freezing_cnt);
 	pm_freezing = false;
@@ -190,6 +192,7 @@ void thaw_processes(void)
 
 	schedule();
 	printk("done.\n");
+	trace_suspend_resume(TPS("thaw_processes"), 0, false);
 }
 
 void thaw_kernel_threads(void)
