@@ -144,9 +144,9 @@ static int suspend_prepare(suspend_state_t state)
 	if (error)
 		goto Finish;
 
-	trace_suspend_resume(TPS("freeze_processes"), 0, true);
+	//trace_suspend_resume(TPS("freeze_processes"), 0, true);
 	error = suspend_freeze_processes();
-	trace_suspend_resume(TPS("freeze_processes"), 0, false);
+	//trace_suspend_resume(TPS("freeze_processes"), 0, false);
 	if (!error)
 		return 0;
 
@@ -331,7 +331,7 @@ static int enter_state(suspend_state_t state)
 {
 	int error;
 
-	trace_suspend_resume(TPS("suspend_enter"), state, true);
+	//trace_suspend_resume(TPS("suspend_enter"), state, true);
 	if (!valid_state(state))
 		return -ENODEV;
 
@@ -341,11 +341,11 @@ static int enter_state(suspend_state_t state)
 	if (state == PM_SUSPEND_FREEZE)
 		freeze_begin();
 
-	trace_suspend_resume(TPS("sync_filesystems"), 0, true);
+	//trace_suspend_resume(TPS("sync_filesystems"), 0, true);
 	printk(KERN_INFO "PM: Syncing filesystems ... ");
 	sys_sync();
 	printk("done.\n");
-	trace_suspend_resume(TPS("sync_filesystems"), 0, false);
+	//trace_suspend_resume(TPS("sync_filesystems"), 0, false);
 
 	pr_debug("PM: Preparing system for %s sleep\n", pm_states[state]);
 	error = suspend_prepare(state);
@@ -355,7 +355,7 @@ static int enter_state(suspend_state_t state)
 	if (suspend_test(TEST_FREEZER))
 		goto Finish;
 
-	trace_suspend_resume(TPS("suspend_enter"), state, false);
+	//trace_suspend_resume(TPS("suspend_enter"), state, false);
 	pr_debug("PM: Entering %s sleep\n", pm_states[state]);
 	pm_restrict_gfp_mask();
 	error = suspend_devices_and_enter(state);
