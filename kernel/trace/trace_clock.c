@@ -62,22 +62,12 @@ u64 notrace trace_clock(void)
  */
 u64 notrace trace_clock_jiffies(void)
 {
-	struct timespec uptime;
-	do_posix_clock_monotonic_gettime(&uptime);
-	monotonic_to_bootbased(&uptime);
+	u64 jiffy = jiffies - INITIAL_JIFFIES;
 
 	/* Return nsecs */
-	return (u64)uptime.tv_sec * NSEC_PER_SEC + uptime.tv_nsec;
+	return (u64)jiffies_to_usecs(jiffy) * 1000ULL;
 }
 
-u64 notrace trace_clock_monotonic(void)
-{
-	struct timespec t;
-	do_posix_clock_monotonic_gettime(&t);
-
-	/* Return nsecs */
-	return (u64)t.tv_sec * NSEC_PER_SEC + t.tv_nsec;
-}
 /*
  * trace_clock_global(): special globally coherent trace clock
  *
